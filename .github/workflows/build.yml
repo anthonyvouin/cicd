@@ -12,6 +12,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
+      - name: Cache node_module
+        id: cache-node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
       - run: npm install 
       - run: npm run build
 
@@ -21,8 +27,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Cache node_module
+        id: cache-node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
+      - run: ls -lah
       - name: Cypress run
         uses: cypress-io/github-action@v4.2.0 # use the explicit version number
         with:
@@ -32,3 +45,4 @@ jobs:
 
 
     
+ 
